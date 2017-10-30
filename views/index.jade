@@ -8,6 +8,14 @@ block content
       a(href="/register") Register
     if (user)
       p You are currently logged in as #{user.username}
+      - for (person in people) {
+      h2
+        ul Notes by #{people[person].username}:
+          - for (var i = 0; i < people[person].notes.length; i++) {
+          h4
+            li #{people[person].notes[i]}
+          - }
+      - }
       a(href="/logout") Logout
       p
         h3
@@ -20,9 +28,27 @@ block content
       p
         h3
           | List of notes
-        form(method='post', action='/edit', name='old')
-          textarea(name='text', cols='40', rows='3')
-          br
-          button(name='submit', type='submit')
-            | Update note
+        - for (var i = 0; i < people[person].notes.length; i++) {
+          h4
+            form(method='post', action='/edit', name='old')
+              textarea(name='text', cols='40', rows='3')
+                | #{people[person].notes[i]}
+              br
+              button(name='submit', type='submit')
+                | Update note
+        - }
+
+
+      //for (person in people) {
+      //   console.log(people[person].username);
+      //   // people.push(peopleArray[person]);
+      //}
+
+      //script.
+      //  console.log(myCursor)
+      //  var myDocument = myCursor.hasNext() ? myCursor.next() : null;
+      //  if (myDocument) {
+      //    var myName = myDocument.username;
+      //    print (tojson(myName));
+      //  }
 

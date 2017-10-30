@@ -5,7 +5,21 @@ const router = express.Router();
 
 
 router.get('/', (req, res) => {
-    res.render('index', { user : req.user });
+    Account.find({}, function (err, people) {
+        if (err) return handleError(err);
+
+        // for (person in peopleArray) {
+        //     console.log(peopleArray[person].username);
+        //     // people.push(peopleArray[person]);
+        // }
+        res.render('index', {
+            user   : req.user,
+            people : people
+        });
+    });
+
+
+    // res.render('index', { user : req.user });
 });
 
 router.get('/register', (req, res) => {
