@@ -9,3 +9,20 @@ block content
     if (user)
       p You are currently logged in as #{user.username}
       a(href="/logout") Logout
+      p
+        h3
+          | Add new note
+        form(method='post', action='/add', name='new')
+          textarea(name='text', cols='40', rows='3')
+          br
+          button(name='submit', type='submit')
+            | Add new note
+      p
+        h3
+          | List of notes
+        form(method='post', action='/edit', name='old')
+          textarea(name='text', cols='40', rows='3')
+          br
+          button(name='submit', type='submit')
+            | Update note
+

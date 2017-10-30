@@ -54,49 +54,44 @@ router.get('/logout', (req, res, next) => {
 });
 
 router.post('/add', (req, res) => {
-    var user = req.username;
+    var user  = req.user;
+    var notes = user.notes;
+    var note  = req.params.text;
 
-    Account.findOne({ 'username': user }, function (err, person) {
-        if (err) {
-            return next(err);
-        }
+    Account.findOne({ 'username': user.username }, function (err, person) {
+        if (err) return handleError(err);
         if (person) {
-            notes.addToSet(req.params.note); // adds note
+            notes.push(note); // adds note
+            console.log(user);
             user.save(function(err) {
                 if (err) {
                     return next(err);
                 }
             });
+            res.redirect('/');
         }
     });
 });
 
 router.post('/edit', (req, res) => {
-    var user = req.username;
-
-Account.findOne({ 'username': user }, function (err, person) {
-    if (err) {
-        return next(err);
-    }
-    if (person) {
-        if ((foundIndex = notes.indexOf(req.params.note)) != -1)
-            notes[foundIndex] = req.params.note; // change note if found
-        user.save(function(err) {
-            if (err) {
-                return next(err);
-            }
-        });
-    }
-});
+    Account.findOne({ 'username': user }, function (err, person) {
+        if (err) return handleError(err);
+        if (person) {
+            if ((foundIndex = notes.indexOf(req.params.note)) != -1)
+                notes[foundIndex] = req.params.note; // change note if found
+            user.save(function(err) {
+                if (err) {
+                    return next(err);
+                }
+                res.redirect('/');
+            });
+        }
+    });
 });
 
 router.post('/delete', (req, res) => {
-    var user = req.username;
-
     Account.findOne({ 'username': user }, function (err, person) {
-        if (err) {
-            return next(err);
-        }
+        if (err) return handleError(err);
         if (person) {
             if ((foundIndex = notes.indexOf(req.params.note)) != -1)
                 notes.splice(foundIndex, 1); // remove note if found
@@ -104,6 +99,7 @@ router.post('/delete', (req, res) => {
                 if (err) {
                     return next(err);
                 }
+                res.redirect('/');
             });
         }
     });
