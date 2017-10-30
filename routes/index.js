@@ -56,7 +56,8 @@ router.get('/logout', (req, res, next) => {
 router.post('/add', (req, res) => {
     var user  = req.user;
     var notes = user.notes;
-    var note  = req.params.text;
+    var note  = req.body.text;
+    console.log(note);
 
     Account.findOne({ 'username': user.username }, function (err, person) {
         if (err) return handleError(err);
@@ -78,7 +79,7 @@ router.post('/edit', (req, res) => {
         if (err) return handleError(err);
         if (person) {
             if ((foundIndex = notes.indexOf(req.params.note)) != -1)
-                notes[foundIndex] = req.params.note; // change note if found
+                notes[foundIndex] = req.body.text; // change note if found
             user.save(function(err) {
                 if (err) {
                     return next(err);
