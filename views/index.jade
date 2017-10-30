@@ -18,24 +18,31 @@ block content
       - }
       a(href="/logout") Logout
       p
-        h3
-          | Add new note
-        form(method='post', action='/add', name='new')
-          textarea(name='text', cols='40', rows='3')
-          br
-          button(name='submit', type='submit')
-            | Add new note
+      h2
+        | Add new note
+        h4
+          form(method='post', action='/add', name='new')
+            textarea(name='text', cols='40', rows='3')
+            br
+            button(name='submit', type='submit')
+              | Add new note
       p
-        h3
+        h2
           | List of notes
-        - for (var i = 0; i < people[person].notes.length; i++) {
+        - for (var i = 0; i < user.notes.length; i++) {
           h4
             form(method='post', action='/edit', name='old')
               textarea(name='text', cols='40', rows='3')
-                | #{people[person].notes[i]}
+                | #{user.notes[i]}
+              input(type='hidden' name='i' value='#{i}')
               br
               button(name='submit', type='submit')
                 | Update note
+
+            form(method='post', action='/delete', name='old')
+              input(type='hidden' name='i' value='#{i}')
+              button(name='submit', type='submit')
+                | Remove note
         - }
 
 
